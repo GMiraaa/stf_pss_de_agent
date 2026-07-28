@@ -20,7 +20,7 @@ class Settings(BaseSettings):
 
     # LLM
     google_api_key: str = Field(..., description="Chave de API do Google AI Studio.")
-    model: str = Field("gemini-1.5-flash", description="Modelo Gemini a ser utilizado.")
+    model: str = Field("gemini-2.5-flash", description="Modelo Gemini a ser utilizado.")
     temperature: float = Field(0.2, description="Temperatura de geração do LLM (0–2).")
 
     # Agente

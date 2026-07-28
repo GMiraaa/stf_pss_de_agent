@@ -1,7 +1,7 @@
 # STF PSS — Data Engineering Agent
 
 Agente de IA especializado em **Engenharia de Dados** com arquitetura extensível por **skills** e **ferramentas**.
-O agente usa o padrão ReAct (Raciocínio + Ação) sobre um LLM (padrão: `gpt-4o-mini`) e cresce gradualmente à medida que novas skills de domínio são adicionadas.
+O agente usa o padrão ReAct (Raciocínio + Ação) sobre o **Gemini 2.5 Flash** e cresce gradualmente à medida que novas skills de domínio são adicionadas.
 
 ---
 
@@ -61,7 +61,7 @@ pip install -r requirements.txt
 
 # 4. Configure as variáveis de ambiente
 cp .env.example .env
-# Edite .env e insira sua OPENAI_API_KEY
+# Edite .env e insira sua GOOGLE_API_KEY
 ```
 
 ---
@@ -162,7 +162,7 @@ pytest e_tests/ -v
 | Variável         | Obrigatória | Padrão              | Descrição                               |
 |------------------|-------------|---------------------|-----------------------------------------|
 | `GOOGLE_API_KEY` | Sim         | —                   | Chave de API do Google AI Studio        |
-| `MODEL`          | Não         | `gemini-1.5-flash`  | Modelo Gemini                           |
+| `MODEL`          | Não         | `gemini-2.5-flash`  | Modelo Gemini                           |
 | `TEMPERATURE`    | Não         | `0.2`               | Temperatura de geração (0–2)            |
 | `MAX_ITERATIONS` | Não         | `10`                | Máximo de iterações do loop ReAct       |
 
