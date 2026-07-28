@@ -1,0 +1,49 @@
+{
+  "name": "stf-de-agent",
+  "displayName": "STF DE Agent",
+  "description": "Agente de Engenharia de Dados do STF PSS no chat do VS Code",
+  "version": "0.1.0",
+  "publisher": "stf-pss",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": ["AI"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "chatParticipants": [
+      {
+        "id": "stf-de-agent.de",
+        "fullName": "DE Agent",
+        "name": "de-agent",
+        "description": "Agente de Engenharia de Dados do STF PSS",
+        "isSticky": true,
+        "commands": [
+          {
+            "name": "start",
+            "description": "Inicia o servidor do agente"
+          },
+          {
+            "name": "stop",
+            "description": "Encerra o servidor do agente"
+          },
+          {
+            "name": "reset",
+            "description": "Limpa o histórico de conversa do agente"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "npm run compile && vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "@types/node": "20.x",
+    "typescript": "^5.4.0",
+    "@vscode/vsce": "^3.0.0"
+  }
+}

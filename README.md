@@ -29,7 +29,13 @@ stf_pss_de_agent/
 ├── e_tests/                        # Testes automatizados
 │   └── __init__.py                 # Testes do agente, skills e ferramentas
 │
-├── main.py                         # Ponto de entrada (chat interativo no terminal)
+├── f_vscode_extension/             # Chat participant do VS Code
+│   ├── src/extension.ts            # Lógica da extensão (TypeScript)
+│   ├── package.json
+│   └── tsconfig.json
+│
+├── main.py                         # Chat interativo no terminal
+├── main_api.py                     # Servidor HTTP (usado pelo VS Code)
 ├── requirements.txt
 ├── .env.example                    # Modelo de variáveis de ambiente
 └── .gitignore
@@ -68,22 +74,33 @@ cp .env.example .env
 
 ## Uso
 
+### Terminal (simples)
+
 ```bash
 python main.py
 ```
 
-O agente inicia um chat interativo no terminal:
+### Chat do VS Code (recomendado)
 
+O agente aparece no chat do VS Code como `@de-agent`. **Instale a extensão uma única vez:**
+
+```bash
+cd f_vscode_extension
+npm install
+npm run package           # gera stf-de-agent-0.1.0.vsix
+code --install-extension stf-de-agent-0.1.0.vsix
 ```
-============================================================
-  STF PSS — Data Engineering Agent
-  Digite 'sair' para encerrar | 'reset' para limpar contexto
-============================================================
 
-Você: O que é um Data Lakehouse?
+> Requisito: Node.js 18+ instalado.
 
-Agente: Um Data Lakehouse combina...
-```
+Depois é só usar o chat (`Ctrl+Alt+I`). A extensão gerencia o servidor automaticamente:
+
+| Comando | Ação |
+|---|---|
+| `@de-agent /start` | Instala dependências e inicia o servidor |
+| `@de-agent /stop` | Encerra o servidor |
+| `@de-agent /reset` | Limpa o histórico da conversa |
+| `@de-agent <pergunta>` | Conversa com o agente |
 
 ---
 
