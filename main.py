@@ -11,6 +11,9 @@ from __future__ import annotations
 
 from a_agent import Agent
 from c_tools.busca_informacao_tool import BuscaInformacaoTool
+from c_tools.file_csv_tool import ValidarCsvTool
+from c_tools.pyspark_tool import PerfilCsvPySparkTool
+from c_tools.sqlite_tool import ExecutarSqliteTool
 
 
 def build_agent() -> Agent:
@@ -22,6 +25,9 @@ def build_agent() -> Agent:
 
     # Ferramentas — adicione novas ferramentas aqui
     agent.register_tool(BuscaInformacaoTool())
+    agent.register_tool(ValidarCsvTool())
+    agent.register_tool(ExecutarSqliteTool())
+    agent.register_tool(PerfilCsvPySparkTool())
 
     return agent
 

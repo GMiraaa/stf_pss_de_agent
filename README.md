@@ -1,7 +1,9 @@
 # STF PSS — Data Engineering Agent
 
-Agente de IA especializado em **Engenharia de Dados** com arquitetura extensível por **skills** e **ferramentas**.
+Agente de IA especializado em **Engenharia de Dados** com arquitetura extensível por **skills**, **ferramentas**, catálogos e workflows documentados.
 O agente usa o padrão ReAct (Raciocínio + Ação) sobre o **Gemini 2.5 Flash** e cresce gradualmente à medida que novas skills de domínio são adicionadas.
+
+O escopo deste repositório é Data Engineering: ingestão, ETL/ELT, PySpark/Spark, qualidade, profiling técnico, Delta Lake, Lakehouse, contratos, batch, streaming, observabilidade, bancos, MCP e entrega técnica de dados. Dashboards executivos, storytelling de negócio e modelagem preditiva avançada pertencem aos repositórios de Data Analytics ou Data Science.
 
 ---
 
@@ -28,6 +30,21 @@ stf_pss_de_agent/
 │
 ├── e_tests/                        # Testes automatizados
 │   └── __init__.py                 # Testes do agente, skills e ferramentas
+│
+├── docs/                           # Catálogos, pesquisa, decisões e matriz de cobertura
+│   ├── agent_catalog.md
+│   ├── skill_catalog.md
+│   ├── workflow_catalog.md
+│   ├── requirements_coverage.md
+│   ├── research_report.md
+│   ├── sources_and_licenses.md
+│   ├── decisions.md
+│   ├── security.md
+│   ├── observability.md
+│   └── limitations.md
+│
+├── workflows/                      # Espaço para workflows executáveis futuros
+│   └── README.md
 │
 ├── f_vscode_extension/             # Chat participant do VS Code
 │   ├── src/extension.ts            # Lógica da extensão (TypeScript)
@@ -108,6 +125,20 @@ Depois é só usar o chat (`Ctrl+Alt+I`). A extensão gerencia o servidor automa
 
 Skills são arquivos **Markdown** em `b_skills/`. O agente carrega todos os `.md` do diretório automaticamente na inicialização — nenhuma linha de código é necessária.
 
+As skills atuais cobrem:
+
+| Skill | Finalidade |
+|---|---|
+| `engenharia_dados_basico.md` | Fundamentos e limites de escopo |
+| `ingestao_arquivos_csv.md` | Ingestão de arquivos, CSV, schema, encoding e quarentena |
+| `etl_elt_pyspark.md` | ETL/ELT, PySpark, batch/incremental e performance Spark |
+| `qualidade_observabilidade.md` | Qualidade, profiling técnico, estatística operacional e observabilidade |
+| `lakehouse_delta_schema_contracts.md` | Lakehouse, Delta Lake, schemas e contratos |
+| `integracao_bancos_mcp_entrega.md` | Bancos, APIs, MCP e entrega técnica para consumo |
+| `batch_streaming_orquestracao.md` | Batch, streaming, checkpoint, backfill e orquestração |
+
+O contrato mínimo de metadados das skills está em [docs/skill_catalog.md](docs/skill_catalog.md).
+
 1. Crie um arquivo em `b_skills/`, por exemplo `sql_avancado.md`:
 
 ```markdown
@@ -164,6 +195,43 @@ from c_tools.executar_sql_tool import ExecutarSqlTool
 agent.register_tool(ExecutarSqlTool())
 ```
 
+Ferramentas registradas atualmente:
+
+| Tool | Finalidade | Guardrails |
+|---|---|---|
+| `buscar_informacao` | Busca mock de conhecimento interno | Não acessa fonte externa real |
+| `validar_csv` | Valida CSV local, schema simples, contagens e rejeições | Não descarta dados; reporta erros |
+| `executar_sqlite` | Executa SQL parametrizado em SQLite local | Bloqueia SQL destrutivo e escrita por padrão |
+| `perfil_csv_pyspark` | Perfil técnico de CSV com Spark local opcional | Importa PySpark somente quando chamado |
+
+---
+
+## Workflows executáveis
+
+### CSV para Bronze local
+
+```bash
+python3 -m workflows.csv_to_bronze \
+  --source-path examples/input.csv \
+  --output-dir data/bronze/input \
+  --schema '{"id":"integer","nome":"string","valor":"float"}'
+```
+
+Gera `data.jsonl`, `quarantine.jsonl` e `metadata.json` de forma atômica.
+
+### SQLite incremental para CSV
+
+```bash
+python3 -m workflows.sqlite_incremental_to_csv \
+  --database-path data/source.db \
+  --query "select id, updated_at, amount from events where updated_at > ? order by updated_at" \
+  --output-path data/export/events.csv \
+  --state-path data/state/events.json \
+  --watermark-column updated_at
+```
+
+Mantém watermark em arquivo de estado JSON.
+
 ---
 
 ## Testes
@@ -171,6 +239,25 @@ agent.register_tool(ExecutarSqlTool())
 ```bash
 pytest e_tests/ -v
 ```
+
+Os testes atuais validam a integridade dos catálogos, metadados das skills, tools de CSV/SQLite e workflows locais com datasets sintéticos. PySpark é validado como dependência opcional: se não estiver instalado, a tool falha com mensagem acionável.
+
+---
+
+## Catálogos e rastreabilidade
+
+- [Catálogo de agentes](docs/agent_catalog.md)
+- [Catálogo de skills](docs/skill_catalog.md)
+- [Catálogo de workflows](docs/workflow_catalog.md)
+- [Matriz de cobertura](docs/requirements_coverage.md)
+- [Relatório da pesquisa](docs/research_report.md)
+- [Fontes e licenças](docs/sources_and_licenses.md)
+- [Decisões arquiteturais](docs/decisions.md)
+- [Segurança](docs/security.md)
+- [Observabilidade](docs/observability.md)
+- [Limitações](docs/limitations.md)
+
+Nenhum código, prompt ou documentação de terceiros foi copiado para este repositório. As fontes open source pesquisadas foram usadas como referência conceitual e estão registradas em `docs/sources_and_licenses.md`.
 
 ---
 
@@ -188,4 +275,3 @@ pytest e_tests/ -v
 ## Licença
 
 Veja [LICENSE](LICENSE).
-
