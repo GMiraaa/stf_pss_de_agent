@@ -16,6 +16,9 @@ from c_tools.calcular_metricas_tool import CalcularMetricasTool
 from c_tools.executar_clustering_tool import ExecutarClusteringTool
 from c_tools.gerar_plots_tool import GerarPlotsTool
 from c_tools.treinar_predicao_tool import TreinarPredicaoTool
+from c_tools.file_csv_tool import ValidarCsvTool
+from c_tools.pyspark_tool import PerfilCsvPySparkTool
+from c_tools.sqlite_tool import ExecutarSqliteTool
 
 
 def build_agent() -> Agent:
@@ -32,6 +35,9 @@ def build_agent() -> Agent:
     agent.register_tool(AvaliarModeloTool())
     agent.register_tool(CalcularMetricasTool())
     agent.register_tool(GerarPlotsTool())
+    agent.register_tool(ValidarCsvTool())
+    agent.register_tool(ExecutarSqliteTool())
+    agent.register_tool(PerfilCsvPySparkTool())
 
     return agent
 
